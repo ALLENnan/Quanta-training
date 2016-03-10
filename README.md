@@ -8,3 +8,54 @@
 再后来发展到多线程技术，使得在一个程序内部能拥有多个线程并行执行。一个线程的执行可以被认为是一个 CPU 在执行该程序。当一个程序运行在多线程下，就好像有多个 CPU 在同时执行该程序。
 
 多线程比多任务更加有挑战。多线程是在同一个程序内部并行执行，因此会对相同的内存空间进行并发读写操作。这可能是在单线程程序中从来不会遇到的问题。其中的一些错误也未必会在单 CPU 机器上出现，因为两个线程从来不会得到真正的并行执行。然而，更现代的计算机伴随着多核 CPU 的出现，也就意味着不同的线程能被不同的 CPU 核得到真正意义的并行执行。
+
+Java 是最先支持多线程开发的语言之一。
+
+###线程与进程区别
+一个进程包括由操作系统分配的内存空间，包含一个或多个线程。一个线程不能独立的存在，它必须是进程的一部分。一个进程一直运行，直到所有的非守候线程都结束运行后才能结束。
+
+###线程的生命周期
+**新建状态**：
+使用 new 关键字和 Thread 类或其子类建立一个线程对象后，该线程对象就处于新建状态。它保持这个状态直到程序 start() 这个线程。   
+**就绪状态**:
+当线程对象调用了start()方法之后，该线程就进入就绪状态。就绪状态的线程处于就绪队列中，要等待JVM里线程调度器的调度。   
+**运行状态**:
+如果就绪状态的线程获取 CPU 资源，就可以执行run()，此时线程便处于运行状态。处于运行状态的线程最为复杂，它可以变为阻塞状态、就绪状态和死亡状态。   
+**阻塞状态**:
+如果一个线程执行了sleep（睡眠）、suspend（挂起）等方法，失去所占用资源之后，该线程就从运行状态进入阻塞状态。在睡眠时间已到或获得设备资源后可以重新进入就绪状态。   
+**死亡状态**:
+一个运行状态的线程完成任务或者其他终止条件发生时，该线程就切换到终止状态。   
+
+###如何创建并运行java线程
+Java提供了两种创建线程方法：
+ - 继承Thread类本身
+ - 实现Runable接口
+
+1.继承Thread类本身  
+ 创建 Thread 子类的一个实例并重写 run 方法，run 方法会在调用 start()方法之后被执行。
+```java
+public class MyThread extends Thread {
+   public void run(){
+     System.out.println("MyThread running");
+   }
+}
+```
+ 创建并运行 Thread 子类
+```java
+MyThread myThread = new MyThread();
+myThread.start();
+```
+2.实现 Runnable 接口  
+ 新建一个实现了 java.lang.Runnable 接口的类
+```java
+public class MyRunnable implements Runnable {
+   public void run(){
+    System.out.println("MyRunnable running");
+   }
+}
+```
+ 在 Thread 类的构造函数中传入 MyRunnable 的实例对象
+```java
+Thread thread = new Thread(new MyRunnable());
+thread.start();
+```
