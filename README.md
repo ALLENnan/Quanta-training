@@ -88,18 +88,20 @@ UI线程中创建handler，重写handleMessage(Message msg)方法
 private Handler mHandler = new Handler() {  
         public void handleMessage (Message msg) {//处理消息  
             switch(msg.what) {  
+              case "0":
+                 texyview.setText((String) msg.obj);
+                    break;
         }  
     };  
 ```
 非UI线程中发送Message到消息队列
 ```java
-        Message msg = new Message();
-        Bundle b = new Bundle();//存放数据
-        b.putString("data", "数据");
-        msg.setData(b);
-        MyHandlerActivity.this.mHandler.sendMessage(msg); //向Handler发送消息,更新UI
+        Message msg = Message.obtain();
+        msg.obj = "data";
+        msg.what = 0;
+        mHandler.sendMessage(msg); //向Handler发送消息,更新UI
 ```
-具体流程：新建一个Handler对象,通过这个对象向主线程发送信息;而我们发送的信息会先到主线程的MessageQueue进行等待,由Looper按先入先出顺序取出,再根据message对象的what属性分发给对应的Handler进行处理
+具体流程：新建一个Handler对象,通过这个对象向主线程发送信息;而我们发送的信息会先到主线程的MessageQueue进行等待,由Looper按先入先出顺序取出,再根据message对象的what属性分发给对应的Handler进行处理  
 
 2).AsyncTask
 待续...
