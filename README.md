@@ -83,7 +83,7 @@ Android程序刚启动时，会同时启动一个对应的主线程(MainThread)�
  - 使用handler实现非UI线程更新UI界面
  - 使用AsyncTask异步更新UI界面
 1).利用handler可以实现线程间的通信，我们可以在非UI线程发送消息到UI线程，最终让Ui线程来进行ui的操作。
-UI线程中创建handler处理消息
+UI线程中创建handler，重写handleMessage(Message msg)方法
 ```java
 private Handler mHandler = new Handler() {  
         public void handleMessage (Message msg) {//处理消息  
@@ -92,15 +92,14 @@ private Handler mHandler = new Handler() {
     };  
 ```
 非UI线程中发送Message到消息队列
+```java
         Message msg = new Message();
-
-            Bundle b = new Bundle();//存放数据
-
-            b.putString("color", "我的");
-
-            msg.setData(b);
-
-            MyHandlerActivity.this.myHandler.sendMessage(msg); //向Handler发送消息,更新UI
+        Bundle b = new Bundle();//存放数据
+        b.putString("data", "数据");
+        msg.setData(b);
+        MyHandlerActivity.this.mHandler.sendMessage(msg); //向Handler发送消息,更新UI
+```
 具体流程：新建一个Handler对象,通过这个对象向主线程发送信息;而我们发送的信息会先到主线程的MessageQueue进行等待,由Looper按先入先出顺序取出,再根据message对象的what属性分发给对应的Handler进行处理
 
 2).AsyncTask
+待续...
