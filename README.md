@@ -1,4 +1,4 @@
-# Quanta-training
+# Quanta-training 研发部Android方向
 #多线程与异步
 ###多线程概念
 在过去单 CPU 时代，单任务在一个时间点只能执行单一程序。之后发展到多任务阶段，计算机能在同一时间点并行执行多任务或多进程。虽然并不是真正意义上的“同一时间点”，而是多个任务或进程共享一个 CPU，并交由操作系统来完成多任务间对 CPU 的运行切换，以使得每个任务都有机会获得一定的时间片运行。
@@ -59,3 +59,23 @@ public class MyRunnable implements Runnable {
 Thread thread = new Thread(new MyRunnable());
 thread.start();
 ```
+###创建线程哪种方法好？
+实现 Runnable 接口
+1.可以避免Java的单继承的特性带来的局限性  
+2.适合多个具有相同代码的线程去处理同一资源的情况，把线程、代码和数据资源三者有效分离，较好地体现了面向对象的设计思想。
+
+#异步任务
+###同步与异步的区别？
+同步就是指一个进程在执行某个请求的时候，若该请求需要一段时间才能返回信息，那么这个进程将会一直等待下去，直到收到返回信息才继续执行下去。  
+异步是指进程不需要一直等下去，而是继续执行下面的操作，不管其他进程的状态。当有消息返回时系统会通知进程进行处理，这样可以提高执行的效率。  
+同步问题多发生在多线程环境中的数据共享问题。即当多个线程需要访问同一个资源时，它们需要以某种顺序来确保该资源在某一特定时刻只能被一个线程所访问，如果使用异步，程序的运行结果将不可预料。因此，在这种情况下，就必须对数据进行同步，即限制只能有一个进程访问资源，其他线程必须等待。
+###安卓为什么要引入异步任务？
+Android程序刚启动时，会同时启动一个对应的主线程(MainThread)，这个主线程主要负责处理与UI相关的事件，即为UI线程。Android UI操作并不是线程安全的，简单来说就是不能从非UI线程来操纵UI组件，必须把所有的UI操作放在UI线程里。
+
+假如我们在非UI线程中，比如在主线程中new Thread()另外开辟一个线程，然后直接在里面修改UI控件的值；此时会抛出下述异常： android.view.ViewRoot$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views；   如果我们把耗时的操作都放在UI线程中的话，如果UI线程超过5s没有响应用于请求，那么 这个时候会引发ANR(Application Not Responding)异常，就是应用无响应；  
+最后一点就是：Android 4.0后禁止在UI线程中执行网络操作，不然会报: android.os.NetworkOnMainThreadException。   
+
+所以，Android的单线程模型有两条原则：  
+1.不要阻塞UI线程
+2.不要在UI线程之外访问Android UI组件  
+
