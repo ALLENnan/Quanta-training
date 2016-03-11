@@ -82,8 +82,17 @@ Android程序刚启动时，会同时启动一个对应的主线程(MainThread)�
 ###3.Android异步处理
  - 使用handler实现非UI线程更新UI界面
  - 使用AsyncTask异步更新UI界面
-1).利用handler可以实现线程间的通信，我们可以在非UI线程发送消息到UI线程，最终让Ui线程来进行ui的操作。
-![]()
+1).利用handler可以实现线程间的通信，我们可以在非UI线程发送消息到UI线程，最终让Ui线程来进行ui的操作。    
+一些概念：
+Looper: 一个线程可以产生一个Looper对象，由它来管理此线程里的MessageQueue(消息队列)。 
+Handler: 你可以构造Handler对象来与Looper沟通，以便push新消息到MessageQueue里;或者接收Looper从Message Queue取出)所送来的消息。
+Message Queue(消息队列):用来存放线程放入的消息。 
+线程：UIthread 通常就是main thread，而Android启动程序时会替它建立一个MessageQueue。 
+
+![图示1](https://github.com/ALLENnan/Quanta-training/blob/master/handler1.png)
+![图示2](https://github.com/ALLENnan/Quanta-training/blob/master/handler2.png)  
+
+如何实现？
 UI线程中创建handler，重写handleMessage(Message msg)方法
 ```java
 private Handler mHandler = new Handler() {  
@@ -103,7 +112,7 @@ private Handler mHandler = new Handler() {
         mHandler.sendMessage(msg); //向Handler发送消息,更新UI
 ```
 
-具体流程：新建一个Handler对象,通过这个对象向主线程发送信息;而我们发送的信息会先到主线程的MessageQueue进行等待,由Looper按先入先出顺序取出,再根据message对象的what属性分发给对应的Handler进行处理     
+深入理解：
 [Android异步消息处理机制完全解析，带你从源码的角度彻底理解](http://blog.csdn.net/guolin_blog/article/details/9991569)   
 [android的消息处理机制（图+源码分析）——Looper,Handler,Message](http://www.cnblogs.com/codingmyworld/archive/2011/09/12/2174255.html)
 2).AsyncTask
