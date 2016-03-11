@@ -81,7 +81,7 @@ Android程序刚启动时，会同时启动一个对应的主线程(MainThread)�
 
 ###3.Android异步处理
  - 使用handler实现非UI线程更新UI界面
- - 使用AsyncTask异步更新UI界面
+ - 使用AsyncTask异步更新UI界面   
 1).利用handler可以实现线程间的通信，我们可以在非UI线程发送消息到UI线程，最终让Ui线程来进行ui的操作。      
 一些概念：  
 Looper: 一个线程可以产生一个Looper对象，由它来管理此线程里的MessageQueue(消息队列)。   
