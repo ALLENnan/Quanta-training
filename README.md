@@ -81,7 +81,8 @@ Android程序刚启动时，会同时启动一个对应的主线程(MainThread)�
 
 ###三.Android异步处理
  - 使用handler实现非UI线程更新UI界面
- - 使用AsyncTask异步更新UI界面   
+ - 使用AsyncTask异步更新UI界面      
+
 ####1.利用handler可以实现线程间的通信，我们可以在非UI线程发送消息到UI线程，最终让Ui线程来进行ui的操作。
 一些概念：  
 Looper: 一个线程只能产生唯一的一个Looper对象，由它来管理此线程里的MessageQueue(消息队列)。   
@@ -110,6 +111,7 @@ private Handler mHandler = new Handler() {
         msg.what = 0;
         mHandler.sendMessage(msg); //向Handler发送消息,更新UI
 ```
+
 注意：
 如果要在非UI线程中创建handler,必须要先调用Looper.prepare()来初始化一个Looper对象，然后调用Looper.loop()来循环取出消息队列中的消息。因为UI主线程默认会产生一个Looper对象，所以不用写。
 
@@ -121,7 +123,8 @@ android提供了几种在其他线程中访问UI线程的方法。
 Activity.runOnUiThread( Runnable )    
 View.post( Runnable )    
 View.postDelayed( Runnable, long )    
-Hanlder    
+Hanlder
+
 这些类或方法同样会使你的代码很复杂很难理解。然而当你需要实现一些很复杂的操作并需要频繁地更新UI时这会变得更糟糕。为了解决这个问题，Android 1.5提供了一个工具类：AsyncTask，它使创建需要与用户界面交互的长时间运行的任务变得更简单。相对来说AsyncTask更轻量级一些，适用于简单的异步处理，不需要借助线程和Handler即可实现。    
 AsyncTask是抽象类.AsyncTask定义了三种泛型类型 Params，Progress和Result。    
 　　Params 启动任务执行的输入参数，比如HTTP请求的URL。    
@@ -135,6 +138,7 @@ AsyncTask的执行分为四个步骤，每一步都对应一个回调方法，�
 　　  doInBackground(Params...), 将在onPreExecute方法执行后马上执行，该方法运行在后台线程中。这里将主要负责执行那些很耗时的后台计算工作。可以调用 publishProgress方法来更新实时的任务进度。该方法是抽象方法，子类必须实现。      
 　　  onProgressUpdate(Progress...),在publishProgress方法被调用后，UIthread将调用这个方法从而在界面上展示任务的进展情况，例如通过一个进度条进行展示。       
 　　  onPostExecute(Result), 在doInBackground 执行完成后，onPostExecute 方法将被UI thread调用，后台的计算结果将通过该方法传递到UI thread.   　  　 
+
 　　  
 为了正确的使用AsyncTask类，以下是几条必须遵守的准则：   
 　　1) Task的实例必须在UI thread中创建   
@@ -142,6 +146,7 @@ AsyncTask的执行分为四个步骤，每一步都对应一个回调方法，�
 　　3) 不要手动的调用onPreExecute(), onPostExecute(Result)，doInBackground(Params...), onProgressUpdate(Progress...)这几个方法 
 　　4) 该task只能被执行一次，否则多次调用时将会出现异常   
 doInBackground方法和onPostExecute的参数必须对应，这两个参数在AsyncTask声明的泛型参数列表中指定，第一个为doInBackground接受的参数，第二个为显示进度的参数，第三个为doInBackground返回和onPostExecute传入的参数。   
+
 　　  
 具体例子和深入理解：  
 [ Android AsyncTask完全解析，带你从源码的角度彻底理解](http://blog.csdn.net/guolin_blog/article/details/11711405)  
