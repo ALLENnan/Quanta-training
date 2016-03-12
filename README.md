@@ -147,6 +147,8 @@ AsyncTask的执行分为四个步骤，每一步都对应一个回调方法，�
 　　4) 该task只能被执行一次，否则多次调用时将会出现异常   
 doInBackground方法和onPostExecute的参数必须对应，这两个参数在AsyncTask声明的泛型参数列表中指定，第一个为doInBackground接受的参数，第二个为显示进度的参数，第三个为doInBackground返回和onPostExecute传入的参数。   
 
-　　  
 具体例子和深入理解：  
 [ Android AsyncTask完全解析，带你从源码的角度彻底理解](http://blog.csdn.net/guolin_blog/article/details/11711405)  
+
+###AsyncTask和Handler的比较
+Android的AsyncTask比Handler更轻量级一些，只是代码上轻量一些，而实际上要比handler更耗资源，适用于简单的异步处理。总之，数据简单使用AsyncTask，实现代码简单；数据量多且复杂则使用handler+thread ，相比较AsyncTask来说能更好的利用系统资源且高效
