@@ -150,5 +150,5 @@ doInBackground方法和onPostExecute的参数必须对应，这两个参数在As
 具体例子和深入理解：  
 [ Android AsyncTask完全解析，带你从源码的角度彻底理解](http://blog.csdn.net/guolin_blog/article/details/11711405)  
 
-###AsyncTask和Handler的比较
+####3.AsyncTask和Handler的比较
 Android的AsyncTask比Handler更轻量级一些，只是代码上轻量一些，而实际上要比handler更耗资源，适用于简单的异步处理。总之，数据简单使用AsyncTask，实现代码简单；数据量多且复杂则使用handler+thread ，相比较AsyncTask来说能更好的利用系统资源且高效
