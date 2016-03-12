@@ -83,7 +83,7 @@ Android程序刚启动时，会同时启动一个对应的主线程(MainThread)�
  - 使用handler实现非UI线程更新UI界面
  - 使用AsyncTask异步更新UI界面      
 
-####1.利用handler可以实现线程间的通信，我们可以在非UI线程发送消息到UI线程，最终让Ui线程来进行ui的操作。
+####1.利用handler实现线程间的通信   
 一些概念：  
 Looper: 一个线程只能产生唯一的一个Looper对象，由它来管理此线程里的MessageQueue(消息队列)。   
 Handler: 你可以构造Handler对象来与Looper沟通，以便push新消息到MessageQueue里;或者接收Looper从Message Queue取出的消息。  
@@ -125,7 +125,8 @@ View.post( Runnable )
 View.postDelayed( Runnable, long )    
 Hanlder
 
-这些类或方法同样会使你的代码很复杂很难理解。然而当你需要实现一些很复杂的操作并需要频繁地更新UI时这会变得更糟糕。为了解决这个问题，Android 1.5提供了一个工具类：AsyncTask，它使创建需要与用户界面交互的长时间运行的任务变得更简单。相对来说AsyncTask更轻量级一些，适用于简单的异步处理，不需要借助线程和Handler即可实现。    
+这些类或方法同样会使你的代码很复杂很难理解。然而当你需要实现一些很复杂的操作并需要频繁地更新UI时这会变得更糟糕。为了解决这个问题，Android 1.5提供了一个工具类：AsyncTask，它使创建需要与用户界面交互的长时间运行的任务变得更简单。相对来说AsyncTask更轻量级一些，适用于简单的异步处理，不需要借助线程和Handler即可实现。   
+
 AsyncTask是抽象类.AsyncTask定义了三种泛型类型 Params，Progress和Result。    
 　　Params 启动任务执行的输入参数，比如HTTP请求的URL。    
 　　Progress 后台任务执行的百分比。    
@@ -143,9 +144,8 @@ AsyncTask的执行分为四个步骤，每一步都对应一个回调方法，�
 为了正确的使用AsyncTask类，以下是几条必须遵守的准则：   
 　　1) Task的实例必须在UI thread中创建   
 　　2) execute方法必须在UI thread中调用   
-　　3) 不要手动的调用onPreExecute(), onPostExecute(Result)，doInBackground(Params...), onProgressUpdate(Progress...)这几个方法 
-　　4) 该task只能被执行一次，否则多次调用时将会出现异常   
-doInBackground方法和onPostExecute的参数必须对应，这两个参数在AsyncTask声明的泛型参数列表中指定，第一个为doInBackground接受的参数，第二个为显示进度的参数，第三个为doInBackground返回和onPostExecute传入的参数。   
+　　3) 不要手动的调用onPreExecute(), onPostExecute(Result)，doInBackground(Params...), onProgressUpdate(Progress...)这几个方法           
+　　4) 该task只能被执行一次，否则多次调用时将会出现异常doInBackground方法和onPostExecute的参数必须对应，这两个参数在AsyncTask声明的泛型参数列表中指定，第一个为doInBackground接受的参数，第二个为显示进度的参数，第三个为doInBackground返回和onPostExecute传入的参数。     
 
 具体例子和深入理解：  
 [ Android AsyncTask完全解析，带你从源码的角度彻底理解](http://blog.csdn.net/guolin_blog/article/details/11711405)  
